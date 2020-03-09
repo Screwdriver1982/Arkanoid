@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8387039999773591296}
   - component: {fileID: 8387039999773591299}
   m_Layer: 0
-  m_Name: WoodBlock (2)
+  m_Name: StoneBigBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0a1700f4f1ec5ca43b2cb3e43e8c0ab0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1ead0b0a208f3c243b3c925a4202101c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,14 +100,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 0.7, y: 0.7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &8387039999773591299
 MonoBehaviour:
@@ -121,6 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa9d5a7ee595dde43be60d8534f77853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockHP: 2
-  dmgIcon: {fileID: 21300000, guid: 198a201f3bf82df4785bf31fa13a797c, type: 3}
-  blockScore: 50
+  blockHP: 4
+  dmgIcon: {fileID: 21300000, guid: 1bd45b793ed0acb4bb582ab562e75cdf, type: 3}
+  blockScore: 100

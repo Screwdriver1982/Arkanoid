@@ -7,7 +7,9 @@ public class Block : MonoBehaviour
 {
     public int blockHP;
     public Sprite dmgIcon;
+    public int blockScore;
     SpriteRenderer blockIcon;
+    GameManager gameManagerVar;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,10 @@ public class Block : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            gameManagerVar = FindObjectOfType<GameManager>();
+            gameManagerVar.blocksLeft = gameManagerVar.blocksLeft - 1;
+            gameManagerVar.currentScores = gameManagerVar.currentScores + blockScore;
+            gameManagerVar.scoresText.text = "Scores: " + gameManagerVar.currentScores;
         } 
     }
 }

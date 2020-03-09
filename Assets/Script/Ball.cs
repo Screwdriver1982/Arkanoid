@@ -49,7 +49,8 @@ public class Ball : MonoBehaviour
 
     private void LaunchBall()
     {
-        Vector2 force = new Vector2(1, 2) * speed;
+        float angleBall = Random.Range(10,80);
+        Vector2 force = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed;
         rb.AddForce(force);
     }
 
