@@ -33,10 +33,7 @@ public class Block : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            gameManagerVar = FindObjectOfType<GameManager>();
-            gameManagerVar.blocksLeft = gameManagerVar.blocksLeft - 1;
-            gameManagerVar.currentScores = gameManagerVar.currentScores + blockScore;
-            gameManagerVar.scoresText.text = "Scores: " + gameManagerVar.currentScores;
+            FindObjectOfType<GameManager>().DestroyBlock(blockScore);
         } 
     }
 }

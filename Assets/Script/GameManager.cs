@@ -11,6 +11,12 @@ public class GameManager : MonoBehaviour
     LevelMeta levelMetaVar;
     public int currentScores;
     public Text scoresText;
+    Platform platformVar;
+    Transform platformPos;
+    public float startPlatformPosX;
+    public float startPlatfromPosY;
+    Ball ballVar;
+    public float ballStartPosY;
 
     // Start is called before the first frame update
     void Start()
@@ -22,17 +28,38 @@ public class GameManager : MonoBehaviour
     
     void LoadLevel(int level)
     {
-        Destroy(FindObjectOfType<LevelMeta>());
-        Instantiate(levels[level], new Vector3(0, 0, 0), Quaternion.identity);
+        levelMetaVar = FindObjectOfType<LevelMeta>();
+        if (levelMetaVar != null)
+        {
+            Destroy(levelMetaVar.gameObject);
+        } 
+
+        Instantiate(levels[level], Vector3.zero, Quaternion.identity);
+        
         levelMetaVar = FindObjectOfType<LevelMeta>();
         blocksLeft = levelMetaVar.levelItems;
 
+        ballVar = FindObjectOfType<Ball>();
+        ballVar.SetBall(startPlatformPosX, ballStartPosY, false); //устанавливаем шарик в начальное положение и делаем его незапущенным
+
+        
+        platformVar = FindObjectOfType<Platform>();
+        platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY);
+       
+        
+
+
     }
-    void Update()
+    public void DestroyBlock(int score)
     {
+        blocksLeft -- ;
+        currentScores = currentScores + score;
+        scoresText.text = "Scores: " + currentScores;
+
         if (blocksLeft == 0)
         {
-            currentLevel = currentLevel+1;
+            
+            currentLevel = currentLevel + 1;
             LoadLevel(currentLevel);
         }
         

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
 
-    bool started; // запущен ли мяч
+    public bool started; // запущен ли мяч
     Platform platform;
     Rigidbody2D rb;
     public int speed;
@@ -53,6 +53,17 @@ public class Ball : MonoBehaviour
         Vector2 force = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed;
         rb.AddForce(force);
     }
+
+    public void SetBall(float ballX, float ballY, bool active)
+    {
+        started = active;
+        rb.velocity = Vector2.zero;
+        transform.position = new Vector3(ballX, ballY, 0);
+
+    }
+
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

@@ -6,6 +6,7 @@ public class Platform : MonoBehaviour
 {
     public float minX = -7.3f;
     public float maxX = 7.3f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -25,5 +26,10 @@ public class Platform : MonoBehaviour
         float clampedMouseX = Mathf.Clamp(mouseX, minX, maxX);
         transform.position = new Vector3(clampedMouseX, mouseY, 0); //матфункция, которая ограничивает число в рамках диапазона
         
+    }
+
+    public void SetPlatform(float platformX, float platformY)
+    {
+        transform.position = new Vector3(platformX, platformY, 0);
     }
 }
