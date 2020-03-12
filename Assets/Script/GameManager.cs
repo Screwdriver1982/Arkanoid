@@ -17,16 +17,22 @@ public class GameManager : MonoBehaviour
     public float startPlatfromPosY;
     Ball ballVar;
     public float ballStartPosY;
+    public int maxLives;
+    int livesLeft;
+    public Text livesLeftTxt;
 
     // Start is called before the first frame update
     void Start()
     {
+        livesLeft = maxLives;
+        livesLeftTxt.text = "Lives: " + livesLeft;
+
         LoadLevel(currentLevel);
     }
 
     // Update is called once per frame
     
-    void LoadLevel(int level)
+    public void LoadLevel(int level)
     {
         levelMetaVar = FindObjectOfType<LevelMeta>();
         if (levelMetaVar != null)
@@ -40,11 +46,11 @@ public class GameManager : MonoBehaviour
         blocksLeft = levelMetaVar.levelItems;
 
         ballVar = FindObjectOfType<Ball>();
-        ballVar.SetBall(startPlatformPosX, ballStartPosY, false); //устанавливаем шарик в начальное положение и делаем его незапущенным
+        ballVar.SetBall(startPlatformPosX, ballStartPosY, false, false); //устанавливаем шарик в начальное положение и делаем его незапущенным
 
         
-        platformVar = FindObjectOfType<Platform>();
-        platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY);
+        platformVar = FindObjectOfType<Platform>(); 
+        platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY); //устанавливаем платформу в началаьное положение
        
         
 
@@ -64,4 +70,16 @@ public class GameManager : MonoBehaviour
         }
         
     }
+
+    public void Death()
+    {
+        livesLeft -- ;
+        livesLeftTxt.text = "Lives: " + livesLeft;
+        ballVar = FindObjectOfType<Ball>();
+        ballVar.SetBall(startPlatformPosX, ballStartPosY, false, false);
+
+        platformVar = FindObjectOfType<Platform>();
+        platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY);
+    }
+
 }

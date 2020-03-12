@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
     Platform platform;
     Rigidbody2D rb;
     public int speed;
+    public TrailRenderer trail;
 
 
     // Start is called before the first frame update
@@ -39,27 +40,32 @@ public class Ball : MonoBehaviour
         //двигаем мяч с платформой
         transform.position = new Vector3(platform.transform.position.x, transform.position.y, 0);
         
-        //стартуем мяч
+        //стартуем мяч 
         if (Input.GetMouseButtonDown(0))
         {
+            
             started = true;
             LaunchBall();
+
+            trail.gameObject.SetActive(true);
+            
+
         }
     }
 
     private void LaunchBall()
     {
-        float angleBall = Random.Range(10,80);
+        float angleBall = Random.Range(10, 80);
         Vector2 force = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed;
         rb.AddForce(force);
     }
 
-    public void SetBall(float ballX, float ballY, bool active)
+    public void SetBall(float ballX, float ballY, bool active, bool trailActivity)
     {
         started = active;
         rb.velocity = Vector2.zero;
         transform.position = new Vector3(ballX, ballY, 0);
-
+        trail.gameObject.SetActive(trailActivity);
     }
 
 
@@ -72,7 +78,25 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Debug.Log("Exit");
+        
+        // проверяем летает ли шар горизонтально, если да, то меняем угол немного
+        if (Mathf.Approximately(rb.velocity.x,0) )
+        {
+            float newAngel = Random.Range(85, 95);
+            rb.velocity = new Vector2(Mathf.Cos(newAngel), Mathf.Sin(newAngel)) * rb.velocity.magnitude;
+
+        }
+        
+        // проверяем летает ли шар вертикально и если да, то меняем немного
+        
+        if (Mathf.Approximately(rb.velocity.y, 0))
+        {
+
+            float newAngel = Random.Range(-5, 5);
+            rb.velocity = new Vector2(Mathf.Cos(newAngel), Mathf.Sin(newAngel)) * rb.velocity.magnitude;
+
+        }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)

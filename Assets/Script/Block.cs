@@ -10,17 +10,17 @@ public class Block : MonoBehaviour
     public int blockScore;
     SpriteRenderer blockIcon;
     GameManager gameManagerVar;
+    LevelMeta levelMeta;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        levelMeta = FindObjectOfType<LevelMeta>();
+        levelMeta.AddBlockCount();
+
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (blockHP > 1)
