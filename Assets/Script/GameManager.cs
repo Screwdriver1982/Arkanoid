@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public int maxLives;
     int livesLeft;
     public Text livesLeftTxt;
+    bool pauseActive;
+
 
     // Start is called before the first frame update
     void Start()
@@ -80,6 +82,28 @@ public class GameManager : MonoBehaviour
 
         platformVar = FindObjectOfType<Platform>();
         platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY);
+    }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseActive)
+            {
+                //выключить паузу
+                Time.timeScale = 1;
+                pauseActive = false;
+            }
+            else
+            {
+                //включить паузу
+                Time.timeScale = 0;
+                pauseActive = true;
+            }
+
+        }
+
     }
 
 }
