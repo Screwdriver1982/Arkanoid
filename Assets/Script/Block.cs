@@ -11,6 +11,8 @@ public class Block : MonoBehaviour
     SpriteRenderer blockIcon;
     GameManager gameManagerVar;
     LevelMeta levelMeta;
+    public GameObject pickup;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -34,6 +36,13 @@ public class Block : MonoBehaviour
         {
             Destroy(gameObject);
             FindObjectOfType<GameManager>().DestroyBlock(blockScore);
+            if (pickup != null)
+            {
+                Vector3 pickupPosition = transform.position;
+                //Instantiate(pickup, pickupPosition, Quaternion.identity);
+                GameObject newObject = Instantiate(pickup);
+                newObject.transform.position = pickupPosition;
+            }
         } 
     }
 }

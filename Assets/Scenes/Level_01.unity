@@ -149,6 +149,11 @@ PrefabInstance:
       propertyPath: trail
       value: 
       objectReference: {fileID: 464968542}
+    - target: {fileID: 234742692430497745, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
+        type: 3}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 234742692430497746, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
         type: 3}
       propertyPath: m_LocalPosition.x

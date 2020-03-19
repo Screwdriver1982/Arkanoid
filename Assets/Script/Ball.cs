@@ -8,16 +8,21 @@ public class Ball : MonoBehaviour
     public bool started; // запущен ли мяч
     Platform platform;
     Rigidbody2D rb;
-    public int speed;
+    public float speed;
     public TrailRenderer trail;
 
 
     // Start is called before the first frame update
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>(); //находим компоненту ригидбади на том же объекте, к которому приделан скрипт
+    }
+
     void Start()
     {
         started = false;
         platform = FindObjectOfType<Platform>(); //находим компоненту платформы
-        rb = GetComponent<Rigidbody2D>(); //находим компоненту ригидбади на том же объекте, к которому приделан скрипт
+        
     }
 
     // Update is called once per frame
@@ -26,7 +31,7 @@ public class Ball : MonoBehaviour
         if (started)
         {
             // ничего не делаем
-            Debug.Log(rb.velocity.magnitude);
+           // Debug.Log(rb.velocity.magnitude);
         }
         else
         {
@@ -56,8 +61,8 @@ public class Ball : MonoBehaviour
     private void LaunchBall()
     {
         float angleBall = Random.Range(10, 80);
-        Vector2 force = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed;
-        rb.AddForce(force);
+        Vector2 speedVector = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed;
+        rb.velocity = speedVector;
     }
 
     public void SetBall(float ballX, float ballY, bool active, bool trailActivity)
@@ -71,11 +76,7 @@ public class Ball : MonoBehaviour
 
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("Collision!");
-    }
-
+    
     private void OnCollisionExit2D(Collision2D collision)
     {
         
@@ -99,14 +100,14 @@ public class Ball : MonoBehaviour
 
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        Debug.Log("Stay");
-    }
-        
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("TriggerEnter");
-    }
     
+
+    private void OnDrawGizmos()
+    {
+        if (rb != null)
+        {
+            Gizmos.DrawLine(transform.position, transform.position + (Vector3)rb.velocity);
+        } 
+    }
+
 }

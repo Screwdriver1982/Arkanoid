@@ -17,9 +17,7 @@ public class Platform : MonoBehaviour
     void Update()
     {
         Vector3 mousePos = Input.mousePosition; //координаты на экране
-        Debug.Log(mousePos); 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos); // функция приводит к координатам мира
-        Debug.Log("mousePos: " + mousePos + " mouseWorldPos: " + mouseWorldPos);
 
         float mouseX = mouseWorldPos.x;
         float mouseY = transform.position.y;

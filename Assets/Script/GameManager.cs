@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
         platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY);
     }
 
+    
     private void Update()
     {
 

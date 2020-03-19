@@ -7,6 +7,9 @@ public class Bottom : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        FindObjectOfType<GameManager>().Death();
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            FindObjectOfType<GameManager>().Death();
+        }
     }
 }
