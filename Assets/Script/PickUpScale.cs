@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickUpBallSpeed : MonoBehaviour
+public class PickUpScale : MonoBehaviour
 {
-    public float speedCoef;
-    Ball[] rballs;
-    
+    Platform platform;
+    public float scaleEffect;
+
     void ApplyEffect()
     {
-        rballs = FindObjectsOfType<Ball>();
-        if (rballs != null)
+        platform = FindObjectOfType<Platform>();
+        if (platform != null)
         {
-            for (int i = 0; i < rballs.Length; i++)
-            {
-                rballs[i].ChangeVelocity(speedCoef);
-                Debug.Log("increase");
-            }
+            platform.transform.localScale = new Vector3 (platform.transform.localScale.x * scaleEffect, platform.transform.localScale.y, platform.transform.localScale.z);
+            platform.scaleCoef = platform.scaleCoef*scaleEffect;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,7 +21,7 @@ public class PickUpBallSpeed : MonoBehaviour
 
         if (collision.CompareTag("Platform"))
         {
-            
+
             ApplyEffect();
             FindObjectOfType<GameManager>().RemovePickupFromList(gameObject);
             Destroy(gameObject);
@@ -39,3 +36,4 @@ public class PickUpBallSpeed : MonoBehaviour
 
     }
 }
+

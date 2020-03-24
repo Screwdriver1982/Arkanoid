@@ -35,14 +35,16 @@ public class Block : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            FindObjectOfType<GameManager>().DestroyBlock(blockScore);
             if (pickup != null)
             {
                 Vector3 pickupPosition = transform.position;
                 //Instantiate(pickup, pickupPosition, Quaternion.identity);
+                
                 GameObject newObject = Instantiate(pickup);
                 newObject.transform.position = pickupPosition;
+                FindObjectOfType<GameManager>().AddPickupInList(newObject);
             }
+            FindObjectOfType<GameManager>().DestroyBlock(blockScore);
         } 
     }
 }

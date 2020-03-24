@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickUpBallSpeed : MonoBehaviour
+public class AddBalls : MonoBehaviour
 {
-    public float speedCoef;
-    Ball[] rballs;
-    
+    Ball ball;
+
     void ApplyEffect()
     {
-        rballs = FindObjectsOfType<Ball>();
-        if (rballs != null)
+        ball = FindObjectOfType<Ball>();
+        if (ball != null)
         {
-            for (int i = 0; i < rballs.Length; i++)
-            {
-                rballs[i].ChangeVelocity(speedCoef);
-                Debug.Log("increase");
-            }
+            FindObjectOfType<GameManager>().ballsNumber += 1;
+            ball.Duplicate();
+            
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,7 +21,7 @@ public class PickUpBallSpeed : MonoBehaviour
 
         if (collision.CompareTag("Platform"))
         {
-            
+
             ApplyEffect();
             FindObjectOfType<GameManager>().RemovePickupFromList(gameObject);
             Destroy(gameObject);

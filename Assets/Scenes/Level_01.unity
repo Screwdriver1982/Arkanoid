@@ -121,12 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!96 &464968542 stripped
-TrailRenderer:
-  m_CorrespondingSourceObject: {fileID: 234742692286235944, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
-    type: 3}
-  m_PrefabInstance: {fileID: 234742692647657078}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &234742692647657078
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -146,13 +140,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 234742692430497745, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
         type: 3}
-      propertyPath: trail
-      value: 
-      objectReference: {fileID: 464968542}
-    - target: {fileID: 234742692430497745, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
-        type: 3}
-      propertyPath: speed
-      value: 5
+      propertyPath: currentSpeedCoef
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 234742692430497746, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
         type: 3}
@@ -168,26 +157,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 234742692430497746, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 234742692430497746, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 234742692430497746, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 234742692430497746, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 234742692430497746, guid: 1d2cff6b476b15f4db3810a8a415b0a5,
         type: 3}
@@ -226,7 +195,7 @@ PrefabInstance:
     - target: {fileID: 954408725781459469, guid: d55a45945eb1b52478717992ba192b3a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.42
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 954408725781459469, guid: d55a45945eb1b52478717992ba192b3a,
         type: 3}

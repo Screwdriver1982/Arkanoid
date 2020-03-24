@@ -9,7 +9,7 @@ public class Bottom : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            FindObjectOfType<GameManager>().Death();
+            FindObjectOfType<GameManager>().BallDeath(collision.gameObject);
         }
     }
 }

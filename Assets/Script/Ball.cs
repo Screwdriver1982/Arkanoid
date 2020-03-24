@@ -10,6 +10,10 @@ public class Ball : MonoBehaviour
     Rigidbody2D rb;
     public float speed;
     public TrailRenderer trail;
+    public float currentSpeedCoef = 1f;
+    public float dupAng = 10f;
+    public GameObject duplicateBall;
+    float ballDeltaX = 0;
 
 
     // Start is called before the first frame update
@@ -20,7 +24,6 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        started = false;
         platform = FindObjectOfType<Platform>(); //находим компоненту платформы
         
     }
@@ -35,15 +38,15 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            LockBallToPlatform();
+            LockBallToPlatform(ballDeltaX);
         }
 
     }
 
-    private void LockBallToPlatform()
+    private void LockBallToPlatform(float deltaX)
     {
         //двигаем мяч с платформой
-        transform.position = new Vector3(platform.transform.position.x, transform.position.y, 0);
+        transform.position = new Vector3(platform.transform.position.x + deltaX, transform.position.y, 0);
         
         //стартуем мяч 
         if (Input.GetMouseButtonDown(0))
@@ -61,19 +64,33 @@ public class Ball : MonoBehaviour
     private void LaunchBall()
     {
         float angleBall = Random.Range(10, 80);
-        Vector2 speedVector = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed;
+        Vector2 speedVector = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed * currentSpeedCoef;
         rb.velocity = speedVector;
     }
 
-    public void SetBall(float ballX, float ballY, bool active, bool trailActivity)
+    public void SetBall(float ballX, float ballY, bool active, bool trailActivity, bool setBaseSpeed)
     {
+        
         started = active;
         rb.velocity = Vector2.zero;
         transform.position = new Vector3(ballX, ballY, 0);
         trail.gameObject.SetActive(trailActivity);
+        if (setBaseSpeed)
+        {
+            currentSpeedCoef = 1f;
+        }
     }
 
-
+    public void Duplicate()
+    {
+        Vector3 newBallposition = transform.position;
+        Vector3 vel = rb.velocity;
+        GameObject newObject = Instantiate(duplicateBall);
+        newObject.transform.position = newBallposition;
+        Rigidbody2D newObjectRb = newObject.GetComponent<Rigidbody2D>();
+        newObjectRb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) - vel.y * Mathf.Sin(dupAng), vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
+        rb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) + vel.y * Mathf.Sin(dupAng), -vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
+    }
 
 
     
@@ -109,5 +126,24 @@ public class Ball : MonoBehaviour
             Gizmos.DrawLine(transform.position, transform.position + (Vector3)rb.velocity);
         } 
     }
+
+    public void ChangeVelocity(float speedCoef)
+    {
+        rb.velocity = rb.velocity * speedCoef;
+        currentSpeedCoef = currentSpeedCoef * speedCoef;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            if (collision.gameObject.GetComponent<Platform>().sticky)
+            {
+                SetBall(rb.transform.position.x, rb.transform.position.y, false, false, false);
+                ballDeltaX = rb.transform.position.x - collision.transform.position.x;
+            }
+        }
+    }
+
 
 }

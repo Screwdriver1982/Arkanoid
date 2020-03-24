@@ -133,6 +133,8 @@ MonoBehaviour:
   ballStartPosY: -3.63
   maxLives: 3
   livesLeftTxt: {fileID: 4722497139433961527}
+  pickUpsList: []
+  ballsNumber: 1
 --- !u!1 &4722497139433961525
 GameObject:
   m_ObjectHideFlags: 0
