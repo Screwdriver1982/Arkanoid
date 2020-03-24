@@ -11,8 +11,8 @@ public class Ball : MonoBehaviour
     public float speed;
     public TrailRenderer trail;
     public float currentSpeedCoef = 1f;
-    public float dupAng = 10f;
-    public GameObject duplicateBall;
+    public float dupAng = Mathf.PI/9;
+    //public GameObject duplicateBall;
     float ballDeltaX = 0;
 
 
@@ -63,9 +63,22 @@ public class Ball : MonoBehaviour
 
     private void LaunchBall()
     {
-        float angleBall = Random.Range(10, 80);
+        float angleBall;
+        if (rb.transform.position.x > platform.transform.position.x)
+        {
+            angleBall = Random.Range(Mathf.PI / 18, Mathf.PI * 8 / 18);
+        }
+        else
+        {
+            angleBall = Random.Range(Mathf.PI *10 / 18, Mathf.PI * 17 / 18);
+        }
+
+        
+        Debug.Log(angleBall);
+        Debug.Log(Mathf.Sin(angleBall));
         Vector2 speedVector = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed * currentSpeedCoef;
         rb.velocity = speedVector;
+        Debug.Log(rb.velocity);
     }
 
     public void SetBall(float ballX, float ballY, bool active, bool trailActivity, bool setBaseSpeed)
@@ -85,11 +98,10 @@ public class Ball : MonoBehaviour
     {
         Vector3 newBallposition = transform.position;
         Vector3 vel = rb.velocity;
-        GameObject newObject = Instantiate(duplicateBall);
-        newObject.transform.position = newBallposition;
+        GameObject newObject = Instantiate(gameObject);
         Rigidbody2D newObjectRb = newObject.GetComponent<Rigidbody2D>();
         newObjectRb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) - vel.y * Mathf.Sin(dupAng), vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
-        rb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) + vel.y * Mathf.Sin(dupAng), -vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
+        rb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) + vel.y * Mathf.Sin(dupAng), - vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
     }
 
 
@@ -137,10 +149,11 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            if (collision.gameObject.GetComponent<Platform>().sticky)
+            if (platform.sticky)
             {
-                SetBall(rb.transform.position.x, rb.transform.position.y, false, false, false);
                 ballDeltaX = rb.transform.position.x - collision.transform.position.x;
+                SetBall(rb.transform.position.x, rb.transform.position.y, false, false, false);
+                
             }
         }
     }

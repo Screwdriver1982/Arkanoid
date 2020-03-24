@@ -12,8 +12,13 @@ public class PickUpBallScale : MonoBehaviour
         balls = FindObjectsOfType<Ball>();
         if (balls != null)
         {
-            for(int i =0; i <balls.Length; i++)
-            balls[i].transform.localScale = new Vector3(balls[i].transform.localScale.x * ballScaleEffect, balls[i].transform.localScale.y * ballScaleEffect, balls[i].transform.localScale.z);
+            for (int i = 0; i < balls.Length; i++)
+            { 
+                balls[i].transform.localScale = new Vector3(
+                    balls[i].transform.localScale.x * ballScaleEffect, 
+                    balls[i].transform.localScale.y * ballScaleEffect, 
+                    balls[i].transform.localScale.z);
+            }    
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
