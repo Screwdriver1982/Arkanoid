@@ -11,9 +11,12 @@ public class Ball : MonoBehaviour
     public float speed;
     public TrailRenderer trail;
     public float currentSpeedCoef = 1f;
-    public float dupAng = Mathf.PI/9;
+    public float dupAng = Mathf.PI / 9;
     //public GameObject duplicateBall;
     float ballDeltaX = 0;
+    public float newAngel = Mathf.PI / 18;
+    public bool isBlast;
+    public float blastRadius;
 
 
     // Start is called before the first frame update
@@ -25,7 +28,7 @@ public class Ball : MonoBehaviour
     void Start()
     {
         platform = FindObjectOfType<Platform>(); //находим компоненту платформы
-        
+
     }
 
     // Update is called once per frame
@@ -34,7 +37,7 @@ public class Ball : MonoBehaviour
         if (started)
         {
             // ничего не делаем
-           // Debug.Log(rb.velocity.magnitude);
+            // Debug.Log(rb.velocity.magnitude);
         }
         else
         {
@@ -47,16 +50,16 @@ public class Ball : MonoBehaviour
     {
         //двигаем мяч с платформой
         transform.position = new Vector3(platform.transform.position.x + deltaX, transform.position.y, 0);
-        
+
         //стартуем мяч 
         if (Input.GetMouseButtonDown(0))
         {
-            
+
             started = true;
             LaunchBall();
 
             trail.gameObject.SetActive(true);
-            
+
 
         }
     }
@@ -66,24 +69,24 @@ public class Ball : MonoBehaviour
         float angleBall;
         if (rb.transform.position.x > platform.transform.position.x)
         {
-            angleBall = Random.Range(Mathf.PI / 18, Mathf.PI * 8 / 18);
+            angleBall = Random.Range(Mathf.PI * 7 / 18, Mathf.PI * 4 / 9);
         }
         else
         {
-            angleBall = Random.Range(Mathf.PI *10 / 18, Mathf.PI * 17 / 18);
+            angleBall = Random.Range(Mathf.PI *5 / 9, Mathf.PI * 11 / 18);
         }
 
-        
-        Debug.Log(angleBall);
-        Debug.Log(Mathf.Sin(angleBall));
-        Vector2 speedVector = new Vector2(Mathf.Cos(angleBall),Mathf.Sin(angleBall)) * speed * currentSpeedCoef;
+
+        //Debug.Log(angleBall);
+        //Debug.Log(Mathf.Sin(angleBall));
+        Vector2 speedVector = new Vector2(Mathf.Cos(angleBall), Mathf.Sin(angleBall)) * speed * currentSpeedCoef;
         rb.velocity = speedVector;
-        Debug.Log(rb.velocity);
+        //Debug.Log(rb.velocity);
     }
 
-    public void SetBall(float ballX, float ballY, bool active, bool trailActivity, bool setBaseSpeed)
+    public void SetBall(float ballX, float ballY, bool active, bool trailActivity, bool setBaseSpeed, bool saveBlast)
     {
-        
+
         started = active;
         rb.velocity = Vector2.zero;
         transform.position = new Vector3(ballX, ballY, 0);
@@ -92,57 +95,52 @@ public class Ball : MonoBehaviour
         {
             currentSpeedCoef = 1f;
         }
+        BecomeBlast(isBlast && saveBlast);
     }
 
     public void Duplicate()
     {
-        Vector3 newBallposition = transform.position;
         Vector3 vel = rb.velocity;
         GameObject newObject = Instantiate(gameObject);
         Rigidbody2D newObjectRb = newObject.GetComponent<Rigidbody2D>();
         newObjectRb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) - vel.y * Mathf.Sin(dupAng), vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
-        rb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) + vel.y * Mathf.Sin(dupAng), - vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
+        rb.velocity = new Vector2(vel.x * Mathf.Cos(dupAng) + vel.y * Mathf.Sin(dupAng), -vel.x * Mathf.Sin(dupAng) + vel.y * Mathf.Cos(dupAng));
     }
 
 
-    
+
     private void OnCollisionExit2D(Collision2D collision)
     {
-        
-        // проверяем летает ли шар горизонтально, если да, то меняем угол немного
-        if (Mathf.Approximately(rb.velocity.x,0) )
+        Vector3 vel = rb.velocity;
+        float velCos = Mathf.Abs(vel.x / vel.magnitude);
+
+
+        // проверяем летает ли шар вертикально, если да, то меняем угол немного
+        if (velCos > 0.995 || velCos < 0.05)
         {
-            float newAngel = Random.Range(85, 95);
-            rb.velocity = new Vector2(Mathf.Cos(newAngel), Mathf.Sin(newAngel)) * rb.velocity.magnitude;
+            rb.velocity = new Vector2(vel.x * Mathf.Cos(newAngel) + vel.y * Mathf.Sin(newAngel), -vel.x * Mathf.Sin(newAngel) + vel.y * Mathf.Cos(newAngel));
+
 
         }
-        
-        // проверяем летает ли шар вертикально и если да, то меняем немного
-        
-        if (Mathf.Approximately(rb.velocity.y, 0))
-        {
 
-            float newAngel = Random.Range(-5, 5);
-            rb.velocity = new Vector2(Mathf.Cos(newAngel), Mathf.Sin(newAngel)) * rb.velocity.magnitude;
-
-        }
 
     }
 
-    
+
 
     private void OnDrawGizmos()
     {
         if (rb != null)
         {
             Gizmos.DrawLine(transform.position, transform.position + (Vector3)rb.velocity);
-        } 
+        }
     }
 
     public void ChangeVelocity(float speedCoef)
     {
-        rb.velocity = rb.velocity * speedCoef;
-        currentSpeedCoef = currentSpeedCoef * speedCoef;
+        speedCoef = Mathf.Clamp(currentSpeedCoef * speedCoef, 0.9f, 2f);
+        rb.velocity = rb.velocity / currentSpeedCoef * speedCoef;
+        currentSpeedCoef = speedCoef;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -152,11 +150,60 @@ public class Ball : MonoBehaviour
             if (platform.sticky)
             {
                 ballDeltaX = rb.transform.position.x - collision.transform.position.x;
-                SetBall(rb.transform.position.x, rb.transform.position.y, false, false, false);
-                
+                SetBall(rb.transform.position.x, rb.transform.position.y, false, false, false, true);
+
             }
+        }
+
+        if (isBlast)
+        {
+            Blast();
+        }
+        
+    }
+
+    private void Blast()
+    {
+        LayerMask layerMask = LayerMask.GetMask("Blocks");
+        Collider2D[] objectInRadius = Physics2D.OverlapCircleAll(transform.position, blastRadius, layerMask);
+        foreach (Collider2D objectI in objectInRadius)
+        {
+
+            Debug.Log("Destroy: " + objectI.gameObject.name);
+            Block block = objectI.gameObject.GetComponent<Block>();
+
+            if (block == null)
+            {
+                Destroy(objectI.gameObject);
+            }
+            else
+            {
+                block.DestroyBlock("Blast of" + gameObject.name);
+                block.gameObject.SetActive(false);
+            }
+
+
         }
     }
 
+    public void BecomeBlast(bool blast)
+    {
+        if (blast)
+        {
+
+            isBlast = true;
+            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            trail.startColor = Color.red;
+            trail.endColor = Color.yellow;
+
+        }
+        else
+        {
+            isBlast = false;
+            gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            trail.startColor = Color.grey;
+            trail.endColor = Color.clear;
+        }
+    }
 
 }

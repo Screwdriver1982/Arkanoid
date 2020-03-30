@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     public Text livesLeftTxt;
     bool pauseActive;
     public List<GameObject> pickUpsList;
+    Transporter transporter;
+    ScenesLoader scenesLoader;
+    GameScore gameScore;
 
 
 
@@ -31,21 +34,31 @@ public class GameManager : MonoBehaviour
     {
         livesLeft = maxLives;
         livesLeftTxt.text = "Lives: " + livesLeft;
-
+        transporter = FindObjectOfType<Transporter>();
+        currentLevel = transporter.chosenLevel;
+        Destroy(transporter.gameObject);
         LoadLevel(currentLevel);
+        scenesLoader = FindObjectOfType<ScenesLoader>();
+        gameScore = FindObjectOfType<GameScore>();
     }
 
     // Update is called once per frame
 
     public void LoadLevel(int level)
     {
+        Debug.Log("Load level: " + level);
+
         levelMetaVar = FindObjectOfType<LevelMeta>();
         if (levelMetaVar != null)
         {
             Destroy(levelMetaVar.gameObject);
         }
 
-
+        if (level >= levels.Length)
+        {
+            gameScore.gameResult = true;
+            scenesLoader.LoadNextLevel();
+        }
 
 
 
@@ -55,7 +68,7 @@ public class GameManager : MonoBehaviour
         blocksLeft = levelMetaVar.levelItems;
 
         ballVar = FindObjectOfType<Ball>();
-        ballVar.SetBall(startPlatformPosX, ballStartPosY, false, false, true); //устанавливаем шарик в начальное положение и делаем его незапущенным
+        ballVar.SetBall(startPlatformPosX, ballStartPosY, false, false, true, true); //устанавливаем шарик в начальное положение и делаем его незапущенным
 
 
         platformVar = FindObjectOfType<Platform>();
@@ -68,8 +81,9 @@ public class GameManager : MonoBehaviour
     public void DestroyBlock(int score)
     {
         blocksLeft--;
-        currentScores = currentScores + score;
-        scoresText.text = "Scores: " + currentScores;
+
+        Debug.Log("Left: " + blocksLeft);
+        AddScore(score);
 
         if (blocksLeft == 0)
         {
@@ -89,7 +103,7 @@ public class GameManager : MonoBehaviour
             //чистим мячи
             if (ballsNumber > 1)
             {
-                Ball[] ballMassive= FindObjectsOfType<Ball>();
+                Ball[] ballMassive = FindObjectsOfType<Ball>();
                 for (int i = 1; i < ballMassive.Length; i++)
                 {
                     Destroy(ballMassive[i].gameObject);
@@ -102,16 +116,31 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void AddScore(int score)
+    {
+        currentScores = currentScores + score;
+        scoresText.text = "Scores: " + currentScores;
+        gameScore.ScoreRecord(score);
+    }
+
     public void Death()
     {
         livesLeft--;
-        livesLeftTxt.text = "Lives: " + livesLeft;
-        ballVar = FindObjectOfType<Ball>();
-        ballVar.SetBall(startPlatformPosX, ballStartPosY, false, false, true);
-        ballVar.transform.localScale = new Vector3(1f, 1f, 1f);
+        if (livesLeft > 0)
+        {
+            livesLeftTxt.text = "Lives: " + livesLeft;
+            ballVar = FindObjectOfType<Ball>();
+            ballVar.SetBall(startPlatformPosX, ballStartPosY, false, false, true, false);
+            ballVar.transform.localScale = new Vector3(1f, 1f, 1f);
 
-        platformVar = FindObjectOfType<Platform>();
-        platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY);
+            platformVar = FindObjectOfType<Platform>();
+            platformVar.SetPlatform(startPlatformPosX, startPlatfromPosY);
+        }
+        else
+        {
+            gameScore.gameResult = false;
+            scenesLoader.LoadNextLevel();
+        }
     }
 
     public void BallDeath(GameObject ball)

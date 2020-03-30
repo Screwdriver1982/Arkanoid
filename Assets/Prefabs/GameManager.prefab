@@ -65,7 +65,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -125,6 +125,8 @@ MonoBehaviour:
   - {fileID: 1708756452402071913, guid: 362e3b1ece683654abfae1a57d30e78c, type: 3}
   - {fileID: 6876395908596900956, guid: d12a5d0396097f944a8694dbde47ad96, type: 3}
   - {fileID: 6876395908596900956, guid: c9430f75de3d82c4c8104814494e3e5d, type: 3}
+  - {fileID: 6876395908596900956, guid: 957aa9b861b95324699b1e9b023c2df1, type: 3}
+  - {fileID: 6876395908596900956, guid: a13e51c7206fc9a4b83a5d75a1dad873, type: 3}
   blocksLeft: 0
   currentScores: 0
   scoresText: {fileID: 4722497139221646629}
@@ -132,9 +134,9 @@ MonoBehaviour:
   startPlatfromPosY: -4.5
   ballStartPosY: -3.63
   maxLives: 3
+  ballsNumber: 1
   livesLeftTxt: {fileID: 4722497139433961527}
   pickUpsList: []
-  ballsNumber: 1
 --- !u!1 &4722497139433961525
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +202,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1

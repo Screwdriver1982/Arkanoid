@@ -6,6 +6,7 @@ public class PickUpBallScale : MonoBehaviour
 {
     Ball[] balls;
     public float ballScaleEffect;
+    public int scores;
 
     void ApplyEffect()
     {
@@ -24,17 +25,19 @@ public class PickUpBallScale : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
+        GameManager gameManager = FindObjectOfType<GameManager>();
         if (collision.CompareTag("Platform"))
         {
 
             ApplyEffect();
-            FindObjectOfType<GameManager>().RemovePickupFromList(gameObject);
+            gameManager.RemovePickupFromList(gameObject);
+            gameManager.AddScore(scores);
             Destroy(gameObject);
 
         }
         else if (collision.CompareTag("Wall"))
         {
-            FindObjectOfType<GameManager>().RemovePickupFromList(gameObject);
+            gameManager.RemovePickupFromList(gameObject);
             Destroy(gameObject);
             Debug.Log("bottom");
         }

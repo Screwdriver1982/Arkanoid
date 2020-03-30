@@ -235,11 +235,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   started: 1
-  speed: 5
+  speed: 8
   trail: {fileID: 234742692286235944}
   currentSpeedCoef: 1
   dupAng: 10
-  duplicateBall: {fileID: 234742692430497748}
+  newAngel: 0.17453294
+  isBlast: 0
+  blastRadius: 1.42
 --- !u!58 &234742692430497744
 CircleCollider2D:
   m_ObjectHideFlags: 0
