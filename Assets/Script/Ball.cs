@@ -6,23 +6,24 @@ public class Ball : MonoBehaviour
 {
 
     public bool started; // запущен ли мяч
-    Platform platform;
-    Rigidbody2D rb;
     public float speed;
     public TrailRenderer trail;
     public float currentSpeedCoef = 1f;
     public float dupAng = Mathf.PI / 9;
-    //public GameObject duplicateBall;
-    float ballDeltaX = 0;
     public float newAngel = Mathf.PI / 18;
     public bool isBlast;
     public float blastRadius;
-
+    
+    Platform platform;
+    Rigidbody2D rb;
+    AudioSource audio;
+    float ballDeltaX = 0;
 
     // Start is called before the first frame update
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); //находим компоненту ригидбади на том же объекте, к которому приделан скрипт
+        audio = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -145,6 +146,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        audio.Play();
         if (collision.gameObject.CompareTag("Platform"))
         {
             if (platform.sticky)
@@ -155,7 +157,7 @@ public class Ball : MonoBehaviour
             }
         }
 
-        if (isBlast)
+        if (isBlast && collision.gameObject.CompareTag("Blocks"))
         {
             Blast();
         }

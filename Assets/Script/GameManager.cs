@@ -43,6 +43,12 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    void EndLevel()
+    {
+        Time.timeScale = 1f;
+        LoadLevel(currentLevel);
+    }
+
 
     public void LoadLevel(int level)
     {
@@ -111,7 +117,8 @@ public class GameManager : MonoBehaviour
             }
 
             currentLevel = currentLevel + 1;
-            LoadLevel(currentLevel);
+            Time.timeScale = 0.3f;
+            Invoke("EndLevel", 1f);
         }
 
     }

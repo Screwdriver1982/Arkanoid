@@ -8,14 +8,16 @@ public class Block : MonoBehaviour
     public int blockHP;
     public Sprite dmgIcon;
     public int blockScore;
-    SpriteRenderer blockIcon;
-    GameManager gameManagerVar;
-    LevelMeta levelMeta;
     public GameObject[] pickups;
     public bool isExploding;
     public float explosionRadius;
     public bool liveOrNot = true;
     public float dropChance;
+
+    SpriteRenderer blockIcon;
+    GameManager gameManagerVar;
+    LevelMeta levelMeta;
+
 
 
     // Start is called before the first frame update
@@ -72,7 +74,7 @@ public class Block : MonoBehaviour
             Debug.Log(gameObject.name + " " + dice);
             Debug.Log(gameObject.name + " " + dropChance);
 
-            if (pickups != null && dice <= dropChance)
+            if (pickups != null && pickups.Length != 0 && dice <= dropChance)
             {
                 int choosenPickupNumber = Random.Range(0, pickups.Length);
                 GameObject pickup = pickups[choosenPickupNumber];
