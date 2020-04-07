@@ -135,3 +135,5 @@ MonoBehaviour:
   explosionRadius: 0
   liveOrNot: 1
   dropChance: 0.6
+  destroySound: {fileID: 8300000, guid: 65936d8f4ef064442bb4fb5ced8f6b7e, type: 3}
+  destroyFX: {fileID: 1750940742320366, guid: 2be2d2e43df66fc45b1656613d11ac4e, type: 3}

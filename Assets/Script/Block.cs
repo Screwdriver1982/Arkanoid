@@ -13,7 +13,10 @@ public class Block : MonoBehaviour
     public float explosionRadius;
     public bool liveOrNot = true;
     public float dropChance;
+    public AudioClip destroySound;
+    public GameObject destroyFX;
 
+    AudioSource audio;
     SpriteRenderer blockIcon;
     GameManager gameManagerVar;
     LevelMeta levelMeta;
@@ -64,7 +67,12 @@ public class Block : MonoBehaviour
         { 
         
             Destroy(gameObject);
+
+            AudioSource audio = FindObjectOfType<AudioSource>();
+            audio.PlayOneShot(destroySound);
+
             liveOrNot = false;
+            audio.Play();
             Debug.Log(actor + " kill: " + gameObject.name);
 
             gameObject.SetActive(false);
@@ -86,7 +94,18 @@ public class Block : MonoBehaviour
                 newObject.transform.position = pickupPosition;
                 FindObjectOfType<GameManager>().AddPickupInList(newObject);
             }
-        
+
+            if (destroyFX != null)
+            {
+                Vector3 fxPosition = transform.position;
+
+                //запомнили созданный объект, чтобы потом его прибить
+                GameObject newObject = Instantiate(destroyFX, fxPosition, Quaternion.identity);
+
+                //уничтожить через N секунд
+                Destroy(newObject, 5f);
+            }
+
 
             if (isExploding)
             {

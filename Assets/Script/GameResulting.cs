@@ -21,6 +21,14 @@ public class GameResulting : MonoBehaviour
         Destroy(gameScore.gameObject);
         LoadUI(playerScore, gameResult);
 
+        int currentBestResult = PlayerPrefs.GetInt("BestScore", 0);
+        if (currentBestResult < playerScore)
+        {
+            PlayerPrefs.SetInt("BestScore", playerScore);
+        }
+
+        
+
     }
 
     void LoadUI(int score, bool winOrLose)
